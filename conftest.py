@@ -6,7 +6,7 @@ import pytest
 from moto import mock_dynamodb2
 
 os.environ['DYNAMODB_TABLE'] = 'surveys'
-os.environ['AWS_DEFAULT_REGION']='us-east-1'
+os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
 
 # Consider replacing this with moto3's mock_sts
 @pytest.fixture(scope='function')
@@ -26,6 +26,7 @@ def dynamodb(aws_credentials):
 
 @pytest.fixture(scope='function')
 def dynamodb_table(dynamodb):
+    """Create a DynamoDB surveys table fixture"""
     table = dynamodb.create_table(
         TableName='surveys',
         KeySchema=[
