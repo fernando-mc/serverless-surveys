@@ -2,17 +2,11 @@ import os
 
 import boto3
 import pytest
-import tempfile
 
-from mock import patch
-from moto import mock_s3, mock_dynamodb2
+from moto import mock_dynamodb2
 
 os.environ['DYNAMODB_TABLE'] = 'surveys'
-
-@pytest.fixture(scope='function')
-def dynamodb_env_variable():
-    """Mocked DynamoDB env variable"""
-    os.environ['DYNAMODB_TABLE'] = 'surveys'
+os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
 
 # Consider replacing this with moto3's mock_sts
 @pytest.fixture(scope='function')
@@ -31,19 +25,8 @@ def dynamodb(aws_credentials):
 
 
 @pytest.fixture(scope='function')
-def retry():
-    """Mock the retry library so that it doesn't retry."""
-    def mock_retry_decorator(*args, **kwargs):
-        def retry(func):
-            return func
-        return retry
-    patch_retry = patch('retrying.retry', mock_retry_decorator)
-    yield patch_retry.start()
-    patch_retry.stop()
-
-
-@pytest.fixture(scope='function')
-def dynamodb_table(dynamodb, dynamodb_env_variable):
+def dynamodb_table(dynamodb):
+    """Create a DynamoDB surveys table fixture"""
     table = dynamodb.create_table(
         TableName='surveys',
         KeySchema=[

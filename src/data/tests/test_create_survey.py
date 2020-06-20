@@ -1,7 +1,9 @@
-from src.data import create_survey
+from src.data.create_survey import create_survey
 
 class StubSurvey:
-    def to_item():
+    def __init__(self):
+        pass
+    def to_item(self):
         return {
             "PK": "CUSTOMER#TEST1",
             "SK": "SURVEY#TEST1",
@@ -10,5 +12,7 @@ class StubSurvey:
             "survey_data": {"TEST": "DATA"}
         }
 
+
 def test_create_survey(dynamodb_table):
-    assert create_survey.create_survey(survey=StubSurvey) == StubSurvey
+    survey_instance = StubSurvey()
+    assert create_survey(survey=survey_instance) == survey_instance

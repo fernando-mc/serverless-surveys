@@ -13,7 +13,7 @@ jobs:
           python-version: 3.8
       - name: Run unit tests
         run: |
-          pip install pytest
+          pip install -r test-requirements.txt
           pytest
       - name: Wemake Python Stylguide
         uses: wemake-services/wemake-python-styleguide@0.13.4

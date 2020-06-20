@@ -1,16 +1,16 @@
-import os
 import boto3
+import os
 
 def get_table():
-    dynamodb = boto3.resource("dynamodb")
+    dynamodb = boto3.resource("dynamodb", region_name='us-east-1')
     table = dynamodb.Table(os.environ["DYNAMODB_TABLE"])
+    return table
 
-    return dynamodb, table
-
-dynamodb, table = get_table()
+table = get_table()
 
 
 def create_survey(survey=None):
+    table = get_table()
     try:
         table.put_item(
             Item=survey.to_item()
