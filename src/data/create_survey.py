@@ -2,6 +2,7 @@ import os
 
 def get_table():
     import boto3
+    boto3.setup_default_session()
     dynamodb = boto3.resource("dynamodb", region_name='us-east-1')
     table = dynamodb.Table(os.environ["DYNAMODB_TABLE"])
 
