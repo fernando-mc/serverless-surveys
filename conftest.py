@@ -1,0 +1,75 @@
+import os
+
+import boto3
+import pytest
+import tempfile
+
+from mock import patch
+from moto import mock_s3, mock_dynamodb2
+
+os.environ['DYNAMODB_TABLE'] = 'surveys'
+
+@pytest.fixture(scope='function')
+def dynamodb_env_variable():
+    """Mocked DynamoDB env variable"""
+    os.environ['DYNAMODB_TABLE'] = 'surveys'
+
+# Consider replacing this with moto3's mock_sts
+@pytest.fixture(scope='function')
+def aws_credentials():
+    """Mocked AWS Credentials for moto."""
+    os.environ['AWS_ACCESS_KEY_ID'] = 'testing'
+    os.environ['AWS_SECRET_ACCESS_KEY'] = 'testing'
+    os.environ['AWS_SECURITY_TOKEN'] = 'testing'
+    os.environ['AWS_SESSION_TOKEN'] = 'testing'
+
+
+@pytest.fixture(scope='function')
+def dynamodb(aws_credentials):
+    with mock_dynamodb2():
+        yield boto3.resource('dynamodb', region_name='us-east-1')
+
+
+@pytest.fixture(scope='function')
+def retry():
+    """Mock the retry library so that it doesn't retry."""
+    def mock_retry_decorator(*args, **kwargs):
+        def retry(func):
+            return func
+        return retry
+    patch_retry = patch('retrying.retry', mock_retry_decorator)
+    yield patch_retry.start()
+    patch_retry.stop()
+
+
+@pytest.fixture(scope='function')
+def dynamodb_table(dynamodb, dynamodb_env_variable):
+    table = dynamodb.create_table(
+        TableName='surveys',
+        KeySchema=[
+            {
+                'AttributeName': 'PK',
+                'KeyType': 'HASH'
+            },
+            {
+                'AttributeName': 'SK',
+                'KeyType': 'HASH'
+            }
+        ],
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'PK',
+                'AttributeType': 'S'
+            },
+            {
+                'AttributeName': 'SK',
+                'AttributeType': 'S'
+            }
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 1,
+            'WriteCapacityUnits': 1
+        }
+    )
+    table.meta.client.get_waiter('table_exists').wait(TableName='surveys')
+    yield

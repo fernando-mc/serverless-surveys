@@ -1,0 +1,25 @@
+import os
+import boto3
+
+def get_table():
+    dynamodb = boto3.resource("dynamodb")
+    table = dynamodb.Table(os.environ["DYNAMODB_TABLE"])
+
+    return dynamodb, table
+
+dynamodb, table = get_table()
+
+
+def create_survey(survey=None):
+    try:
+        table.put_item(
+            Item=survey.to_item()
+        )
+        return survey
+    except Exception as e:
+        print("Error creating survey")
+        print(e)
+        error_message = "Could not create survey"
+        return {
+            "error": error_message
+        }

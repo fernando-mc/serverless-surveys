@@ -1,0 +1,57 @@
+org: fernandomcsea
+app: serverless-surveys
+service: test-surveys
+
+provider:
+  name: aws
+  runtime: python3.8
+  environment:
+    DYNAMODB_TABLE: test-surveys-${opt:stage, self:provider.stage}
+  httpApi:
+    cors: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:GetItem
+      Resource: 
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+functions:
+  createSurvey:
+    handler: src/handlers/create_survey.handler
+    events:
+      - httpApi:
+          path: /survey
+          method: post
+
+resources:
+  Resources:
+    surveysTable: 
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+plugins:
+  - serverless-python-requirements
+
+package:
+  exclude:
+    - node_modules/**
+    - venv/**
+    - __pycache__/**
