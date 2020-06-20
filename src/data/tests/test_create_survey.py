@@ -10,6 +10,7 @@ class StubSurvey:
             "survey_data": {"TEST": "DATA"}
         }
 
+
 def test_create_survey(dynamodb_table):
     import boto3
     from src.data import create_survey

@@ -6,14 +6,12 @@ import pytest
 from moto import mock_dynamodb2
 
 os.environ['DYNAMODB_TABLE'] = 'surveys'
-
+os.environ['AWS_DEFAULT_REGION']='us-east-1'
 
 # Consider replacing this with moto3's mock_sts
 @pytest.fixture(scope='function')
 def aws_credentials():
     """Mocked AWS Credentials for moto."""
-    os.environ['DYNAMODB_TABLE'] = 'surveys'
-    os.environ['AWS_DEFAULT_REGION']='us-east-1'
     os.environ['AWS_ACCESS_KEY_ID'] = 'testing'
     os.environ['AWS_SECRET_ACCESS_KEY'] = 'testing'
     os.environ['AWS_SECURITY_TOKEN'] = 'testing'
