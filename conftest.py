@@ -2,12 +2,11 @@ import os
 
 import boto3
 import pytest
-import tempfile
 
-from mock import patch
-from moto import mock_s3, mock_dynamodb2
+from moto import mock_dynamodb2
 
 os.environ['DYNAMODB_TABLE'] = 'surveys'
+
 
 @pytest.fixture(scope='function')
 def dynamodb_env_variable():
@@ -28,18 +27,6 @@ def aws_credentials():
 def dynamodb(aws_credentials):
     with mock_dynamodb2():
         yield boto3.resource('dynamodb', region_name='us-east-1')
-
-
-@pytest.fixture(scope='function')
-def retry():
-    """Mock the retry library so that it doesn't retry."""
-    def mock_retry_decorator(*args, **kwargs):
-        def retry(func):
-            return func
-        return retry
-    patch_retry = patch('retrying.retry', mock_retry_decorator)
-    yield patch_retry.start()
-    patch_retry.stop()
 
 
 @pytest.fixture(scope='function')
