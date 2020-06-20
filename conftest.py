@@ -8,15 +8,11 @@ from moto import mock_dynamodb2
 os.environ['DYNAMODB_TABLE'] = 'surveys'
 
 
-@pytest.fixture(scope='function')
-def dynamodb_env_variable():
-    """Mocked DynamoDB env variable"""
-    os.environ['DYNAMODB_TABLE'] = 'surveys'
-
 # Consider replacing this with moto3's mock_sts
 @pytest.fixture(scope='function')
 def aws_credentials():
     """Mocked AWS Credentials for moto."""
+    os.environ['DYNAMODB_TABLE'] = 'surveys'
     os.environ['AWS_DEFAULT_REGION']='us-east-1'
     os.environ['AWS_ACCESS_KEY_ID'] = 'testing'
     os.environ['AWS_SECRET_ACCESS_KEY'] = 'testing'
@@ -31,7 +27,7 @@ def dynamodb(aws_credentials):
 
 
 @pytest.fixture(scope='function')
-def dynamodb_table(dynamodb, dynamodb_env_variable):
+def dynamodb_table(dynamodb):
     table = dynamodb.create_table(
         TableName='surveys',
         KeySchema=[

@@ -11,6 +11,7 @@ class StubSurvey:
         }
 
 def test_create_survey(dynamodb_table):
+    import boto3
     from src.data import create_survey
     survey_instance = StubSurvey()
     assert create_survey.create_survey(survey=survey_instance) == survey_instance
