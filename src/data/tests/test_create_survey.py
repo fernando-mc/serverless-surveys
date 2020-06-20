@@ -1,5 +1,3 @@
-from src.data import create_survey
-
 class StubSurvey:
     def __init__(self):
         pass
@@ -13,5 +11,6 @@ class StubSurvey:
         }
 
 def test_create_survey(dynamodb_table):
+    from src.data import create_survey
     survey_instance = StubSurvey()
     assert create_survey.create_survey(survey=survey_instance) == survey_instance
