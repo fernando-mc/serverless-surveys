@@ -2,7 +2,7 @@ import os
 import boto3
 
 def get_table():
-    dynamodb = boto3.resource("dynamodb")
+    dynamodb = boto3.resource("dynamodb", region_name='us-east-1')
     table = dynamodb.Table(os.environ["DYNAMODB_TABLE"])
 
     return dynamodb, table
