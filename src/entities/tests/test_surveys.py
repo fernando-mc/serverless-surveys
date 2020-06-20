@@ -34,9 +34,9 @@ def test_instantiating_survey_with_blank_survey_id_uses_uuid_string_fallback():
     survey = Survey(customer_id, survey_id)
     
     assert survey.customer_id == customer_id
-    assert survey.survey_id != None
-    assert type(survey.survey_id) == str
-    assert valid_uuid(survey.survey_id) == True
+    assert survey.survey_id is not None
+    assert isinstance(survey.survey_id, str)
+    assert valid_uuid(survey.survey_id)
 
 
 def test_survey_key():
@@ -47,7 +47,7 @@ def test_survey_key():
         'PK': 'CUSTOMER#TESTID',
         'SK': 'SURVEY#TESTID'
     }
-    assert type(survey.key()) == dict
+    assert isinstance(survey.key(), dict)
     assert survey.key() == test_key
 
 
@@ -62,5 +62,5 @@ def test_to_item_serialization():
         'survey_id': 'TESTID',
         'survey_data': {'survey':'data'}
     }
-    assert type(survey.to_item()) == dict
+    assert isinstance(survey.to_item(), dict)
     assert survey.to_item() == test_item
