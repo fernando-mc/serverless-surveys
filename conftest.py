@@ -26,7 +26,7 @@ def dynamodb(aws_credentials):
 
 @pytest.fixture(scope='function')
 def dynamodb_table(dynamodb):
-    """Create a DynamoDB surveys table fixture"""
+    """Create a DynamoDB surveys table fixture."""
     table = dynamodb.create_table(
         TableName='surveys',
         KeySchema=[
