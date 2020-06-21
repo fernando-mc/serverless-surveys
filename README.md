@@ -1,0 +1,1 @@
+[![codecov](https://codecov.io/gh/fernando-mc/serverless-surveys/branch/master/graph/badge.svg)](https://codecov.io/gh/fernando-mc/serverless-surveys)
