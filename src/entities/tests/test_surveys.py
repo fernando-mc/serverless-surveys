@@ -1,13 +1,13 @@
 import pytest
-import os
 import re
-from src.data import create_survey
 from src.entities.surveys import Survey, NoCustomerIdException
-from unittest.mock import Mock
 
 
 def valid_uuid(uuid):
-    regex = re.compile('^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}\\Z', re.I)
+    regex = re.compile(
+        '^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}\\Z',  # noqa: E501
+        re.I
+    )
     match = regex.match(uuid)
     return bool(match)
 
@@ -32,7 +32,7 @@ def test_instantiating_survey_with_blank_survey_id_uses_uuid_string_fallback():
     customer_id = '1'
     survey_id = None
     survey = Survey(customer_id, survey_id)
-    
+
     assert survey.customer_id == customer_id
     assert survey.survey_id is not None
     assert isinstance(survey.survey_id, str)
@@ -42,7 +42,11 @@ def test_instantiating_survey_with_blank_survey_id_uses_uuid_string_fallback():
 def test_survey_key():
     customer_id = 'TESTID'
     survey_id = 'TESTID'
-    survey = Survey(customer_id=customer_id, survey_id=survey_id, survey_data=None)
+    survey = Survey(
+        customer_id=customer_id,
+        survey_id=survey_id,
+        survey_data=None
+    )
     test_key = {
         'PK': 'CUSTOMER#TESTID',
         'SK': 'SURVEY#TESTID'
@@ -54,13 +58,17 @@ def test_survey_key():
 def test_to_item_serialization():
     customer_id = 'TESTID'
     survey_id = 'TESTID'
-    survey = Survey(customer_id=customer_id, survey_id=survey_id, survey_data={'survey':'data'})
+    survey = Survey(
+        customer_id=customer_id,
+        survey_id=survey_id,
+        survey_data={'survey': 'data'}
+    )
     test_item = {
         'PK': 'CUSTOMER#TESTID',
         'SK': 'SURVEY#TESTID',
         'customer_id': 'TESTID',
         'survey_id': 'TESTID',
-        'survey_data': {'survey':'data'}
+        'survey_data': {'survey': 'data'}
     }
     assert isinstance(survey.to_item(), dict)
     assert survey.to_item() == test_item
