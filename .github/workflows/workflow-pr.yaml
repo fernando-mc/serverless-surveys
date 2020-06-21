@@ -15,10 +15,16 @@ jobs:
         run: |
           pip install -r test-requirements.txt
           pytest
-      - name: Upload Coverage report
+      - name: Generate coverage report
         run: |
+          pip install -r test-requirements.txt
           pip install pytest-cov
           pytest --cov=./ --cov-report=xml
+      - name: Codecov
+        uses: codecov/codecov-action@v1.0.7
+        with:
+          file: ./coverage.xml
+          flags: unittests
       - name: Wemake Python Stylguide
         uses: wemake-services/wemake-python-styleguide@0.13.4
         continue-on-error: true
