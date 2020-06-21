@@ -1,13 +1,12 @@
-from jsonschema import ValidationError
 from lambda_decorators import (
-    load_json_body, json_schema_validator, 
+    load_json_body, json_schema_validator,
     cors_headers, dump_json_body,
     json_http_resp)
 from src.entities.surveys import Survey
 from src.data.create_survey import create_survey
 
 request_schema = {
-    'type': 'object', 
+    'type': 'object',
     'properties': {
         'body': {
             'type': 'object',
@@ -22,7 +21,8 @@ request_schema = {
     'required': ['body'],
 }
 
-@load_json_body # Doing this first is required for the schema to validate
+
+@load_json_body  # Doing this first is required for the schema to validate
 @json_schema_validator(request_schema=request_schema)
 @cors_headers
 @dump_json_body

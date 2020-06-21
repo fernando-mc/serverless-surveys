@@ -1,10 +1,12 @@
 import boto3
 import os
 
+
 def get_table():
     dynamodb = boto3.resource("dynamodb", region_name='us-east-1')
     table = dynamodb.Table(os.environ["DYNAMODB_TABLE"])
     return table
+
 
 table = get_table()
 
