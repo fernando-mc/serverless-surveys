@@ -8,11 +8,11 @@ def get_table():
     return table
 
 
-table = get_table()
+# This will run in the Lambda environment and be reused across invocations
+default_table = get_table()
 
 
-def create_survey(survey=None):
-    table = get_table()
+def create_survey(survey=None, table=default_table):
     try:
         table.put_item(
             Item=survey.to_item()
