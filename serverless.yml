@@ -21,7 +21,7 @@ provider:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 functions:
   createSurvey:
-    handler: src/handlers/create_survey.handler
+    handler: src/handlers/create_survey_handler.handler
     events:
       - httpApi:
           path: /survey

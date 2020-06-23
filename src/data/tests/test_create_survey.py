@@ -1,5 +1,3 @@
-from moto import mock_dynamodb2
-
 class StubSurvey:
 
     def __init__(self):
