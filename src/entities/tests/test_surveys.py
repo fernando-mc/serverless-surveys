@@ -21,7 +21,7 @@ def test_instantiating_survey_class_with_valid_data():
     customer_id = '1'
     survey_id = '2'
     survey_data = {'key': 'value'}
-    survey = Survey(customer_id, survey_id, survey_data)
+    survey = Survey(customer_id=customer_id, survey_id=survey_id, survey_data=survey_data)
 
     assert survey.customer_id == customer_id
     assert survey.survey_id == survey_id
