@@ -29,7 +29,7 @@ def setup_handler_monkeypatching(dynamodb_table, monkeypatch):
     monkeypatch.setattr(src.data.create_customer, "create_customer", mock_create_customer)
     
 
-def test_create_customer_handler_has_cors_handlers(setup_handler_monkeypatching):
+def test_create_customer_handler_has_cors_headers(setup_handler_monkeypatching):
     from src.handlers.create_customer_handler import handler
     result = handler(good_event, Context())
     assert result['headers'] == {'Access-Control-Allow-Origin': '*'}
