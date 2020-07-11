@@ -19,12 +19,31 @@ provider:
         - dynamodb:GetItem
       Resource:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
 functions:
+  createCustomer:
+    handler: src/handlers/create_customer_handler.handler
+    events:
+      - httpApi:
+          path: /customer
+          method: post
+  getCustomer:
+    handler: src/handlers/create_customer_handler.handler
+    events:
+      - httpApi:
+          path: /customer
+          method: get
   createSurvey:
     handler: src/handlers/create_survey_handler.handler
     events:
       - httpApi:
           path: /survey
+          method: post
+  createResponse:
+    handler: src/handlers/create_response_handler.handler
+    events:
+      - httpApi:
+          path: /response
           method: post
 
 resources:

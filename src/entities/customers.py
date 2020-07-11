@@ -32,16 +32,8 @@ class Customer:
         }
 
 
-    def get(event, body):
-        print(event)
-        customer_id = event['pathParameters']['id']
-        item = table.get_item(
-            Key={
-                'pk': 'CUSTOMER#' + customer_id,
-                'sk': 'PROFILE#' + customer_id
-            }
-        )['Item']
-        return {
-            'statusCode': 200,
-            'body': json.dumps(item)
-        }
+def customer_from_item(attributes):
+    return Customer(
+        customer_id=attributes['customer_id'],
+        profile_data=attributes['profile_data'],
+    )

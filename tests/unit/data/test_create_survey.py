@@ -1,3 +1,5 @@
+from tests.utils.dynamodb import mocked_table
+
 class StubSurvey:
 
     def __init__(self):
@@ -11,14 +13,6 @@ class StubSurvey:
             "survey_id": "TEST1",
             "survey_data": {"TEST": "DATA"}
         }
-
-
-def mocked_table():
-    import boto3
-    import os
-    dynamodb = boto3.resource("dynamodb", region_name='us-east-1')
-    table = dynamodb.Table(os.environ["DYNAMODB_TABLE"])
-    return table
 
 
 def test_create_survey(dynamodb_table):
