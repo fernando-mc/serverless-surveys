@@ -1,5 +1,4 @@
 import pytest
-import re
 from src.entities.surveys import Survey, NoCustomerIdException
 from tests.utils.regexes import valid_uuid
 
@@ -13,8 +12,11 @@ def test_instantiating_survey_class_with_valid_data():
     customer_id = '1'
     survey_id = '2'
     survey_data = {'key': 'value'}
-    survey = Survey(customer_id=customer_id, survey_id=survey_id, survey_data=survey_data)
-
+    survey = Survey(
+        customer_id=customer_id,
+        survey_id=survey_id,
+        survey_data=survey_data
+    )
     assert survey.customer_id == customer_id
     assert survey.survey_id == survey_id
     assert survey.survey_data == survey_data
@@ -32,34 +34,34 @@ def test_instantiating_survey_with_blank_survey_id_uses_uuid_string_fallback():
 
 
 def test_survey_key():
-    customer_id = 'TESTID'
-    survey_id = 'TESTID'
+    customer_id = 'TEST_ID'
+    survey_id = 'TEST_ID'
     survey = Survey(
         customer_id=customer_id,
         survey_id=survey_id,
         survey_data=None
     )
     test_key = {
-        'PK': 'CUSTOMER#TESTID',
-        'SK': 'SURVEY#TESTID'
+        'PK': 'CUSTOMER#TEST_ID',
+        'SK': 'SURVEY#TEST_ID'
     }
     assert isinstance(survey.key(), dict)
     assert survey.key() == test_key
 
 
 def test_to_item_serialization():
-    customer_id = 'TESTID'
-    survey_id = 'TESTID'
+    customer_id = 'TEST_ID'
+    survey_id = 'TEST_ID'
     survey = Survey(
         customer_id=customer_id,
         survey_id=survey_id,
         survey_data={'survey': 'data'}
     )
     test_item = {
-        'PK': 'CUSTOMER#TESTID',
-        'SK': 'SURVEY#TESTID',
-        'customer_id': 'TESTID',
-        'survey_id': 'TESTID',
+        'PK': 'CUSTOMER#TEST_ID',
+        'SK': 'SURVEY#TEST_ID',
+        'customer_id': 'TEST_ID',
+        'survey_id': 'TEST_ID',
         'survey_data': {'survey': 'data'}
     }
     assert isinstance(survey.to_item(), dict)

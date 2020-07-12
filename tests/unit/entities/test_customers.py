@@ -1,5 +1,4 @@
 import pytest
-import re
 from src.entities.customers import Customer, NoCustomerIdException
 
 
