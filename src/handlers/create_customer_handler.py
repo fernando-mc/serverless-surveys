@@ -1,6 +1,6 @@
 from lambda_decorators import (
     load_json_body, json_schema_validator,
-    cors_headers, json_http_resp)
+    cors_headers, json_http_resp, dump_json_body)
 from src.entities.customers import Customer
 from src.data.create_customer import create_customer
 
@@ -24,10 +24,11 @@ request_schema = {
 @json_schema_validator(request_schema=request_schema)
 @cors_headers
 @json_http_resp
+@dump_json_body
 def handler(event, context):
     customer = Customer(**event['body'])
-    create_customer(customer)
-    if event.get('error'):
-        raise Exception(event['error'])
+    result = create_customer(customer)
+    if result.get('error'):
+        raise Exception(result['error'])
     else:
         return event['body']

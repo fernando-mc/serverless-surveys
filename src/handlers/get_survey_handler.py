@@ -29,7 +29,7 @@ def handler(event, context):
     survey_id = event['pathParameters']['survey_id']
     survey = Survey(customer_id=customer_id, survey_id=survey_id)
     result = get_survey(survey).to_item()
-    if event.get('error'):
-        raise Exception(event['error'])
+    if result.get('error'):
+        raise Exception(result['error'])
     else:
         return result

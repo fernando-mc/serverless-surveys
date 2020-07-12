@@ -27,7 +27,7 @@ def handler(event, context):
     customer_id = event['pathParameters']['customer_id']
     customer = Customer(customer_id=customer_id)
     result = get_customer(customer).to_item()
-    if event.get('error'):
-        raise Exception(event['error'])
+    if result.get('error'):
+        raise Exception(result['error'])
     else:
         return result
