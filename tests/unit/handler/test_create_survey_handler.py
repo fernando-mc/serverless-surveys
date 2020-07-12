@@ -3,11 +3,14 @@ import json
 import src.entities.surveys
 import src.data.create_survey
 
+
 class MockSurvey:
     pass
 
+
 class Context:
     pass
+
 
 good_event = {
     "body": json.dumps({
@@ -19,6 +22,7 @@ good_event = {
     })
 }
 
+
 @pytest.fixture(scope='function')
 def setup_handler_monkeypatching(dynamodb_table, monkeypatch):
     def mock_survey(*args, **kwargs):
@@ -27,8 +31,12 @@ def setup_handler_monkeypatching(dynamodb_table, monkeypatch):
     def mock_create_survey(*args, **kwargs):
         pass
     monkeypatch.setattr(src.entities.surveys, "Survey", mock_survey)
-    monkeypatch.setattr(src.data.create_survey, "create_survey", mock_create_survey)
-    
+    monkeypatch.setattr(
+        src.data.create_survey,
+        "create_survey",
+        mock_create_survey
+    )
+
 
 def test_create_survey_handler_has_cors_headers(setup_handler_monkeypatching):
     from src.handlers.create_survey_handler import handler
@@ -40,6 +48,7 @@ def test_create_survey_handler_has_json_body(setup_handler_monkeypatching):
     from src.handlers.create_survey_handler import handler
     result = handler(good_event, Context)
     assert isinstance(json.loads(result['body']), dict)
+
 
 def test_create_survey_handler_returns_schema_validation_error(setup_handler_monkeypatching):
     from src.handlers.create_survey_handler import handler

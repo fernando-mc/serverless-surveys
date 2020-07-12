@@ -3,11 +3,14 @@ import json
 import src.entities.customers
 import src.data.create_customer
 
+
 class MockCustomer:
     pass
 
+
 class Context:
     pass
+
 
 good_event = {
     "body": json.dumps({
@@ -18,6 +21,7 @@ good_event = {
     })
 }
 
+
 @pytest.fixture(scope='function')
 def setup_handler_monkeypatching(dynamodb_table, monkeypatch):
     def mock_customer(*args, **kwargs):
@@ -26,8 +30,12 @@ def setup_handler_monkeypatching(dynamodb_table, monkeypatch):
     def mock_create_customer(*args, **kwargs):
         pass
     monkeypatch.setattr(src.entities.customers, "Customer", mock_customer)
-    monkeypatch.setattr(src.data.create_customer, "create_customer", mock_create_customer)
-    
+    monkeypatch.setattr(
+        src.data.create_customer,
+        "create_customer",
+        mock_create_customer
+    )
+
 
 def test_create_customer_handler_has_cors_headers(setup_handler_monkeypatching):
     from src.handlers.create_customer_handler import handler
@@ -39,6 +47,7 @@ def test_create_customer_handler_has_json_body(setup_handler_monkeypatching):
     from src.handlers.create_customer_handler import handler
     result = handler(good_event, Context)
     assert isinstance(json.loads(result['body']), dict)
+
 
 def test_create_customer_handler_returns_schema_validation_error(setup_handler_monkeypatching):
     from src.handlers.create_customer_handler import handler

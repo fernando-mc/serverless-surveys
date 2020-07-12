@@ -2,8 +2,10 @@ import pytest
 import json
 from tests.utils.dynamodb import mocked_table
 
+
 class Context:
     pass
+
 
 good_event = {
     'pathParameters': {
@@ -19,7 +21,7 @@ def setup_table_item(dynamodb_table):
         'PK': 'CUSTOMER#1',
         'SK': 'PROFILE#1',
         'customer_id': '1',
-        'profile_data': {'some':'data'}
+        'profile_data': {'some': 'data'}
     }
     table.put_item(Item=item)
 
