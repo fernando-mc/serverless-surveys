@@ -38,6 +38,12 @@ def setup_handler_monkeypatching(dynamodb_table, monkeypatch):
     )
 
 
+def test_create_response_handler_returns_200(setup_handler_monkeypatching):
+    from src.handlers.create_response_handler import handler
+    result = handler(good_event, Context())
+    assert result['statusCode'] == 200
+
+
 def test_create_response_handler_has_cors_headers(setup_handler_monkeypatching):
     from src.handlers.create_response_handler import handler
     result = handler(good_event, Context())

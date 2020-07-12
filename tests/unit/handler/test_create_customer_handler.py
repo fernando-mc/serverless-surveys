@@ -15,6 +15,12 @@ good_event = {
 }
 
 
+def test_create_customer_handler_returns_200(dynamodb_table):
+    from src.handlers.create_customer_handler import handler
+    result = handler(good_event, Context())
+    assert result['statusCode'] == 200
+
+
 def test_create_customer_handler_has_cors_headers(dynamodb_table):
     from src.handlers.create_customer_handler import handler
     result = handler(good_event, Context())
