@@ -36,6 +36,7 @@ class Response:
             "response_data": self.response_data
         }
 
+
 def response_from_item(attributes):
     return Response(
         survey_id=attributes['survey_id'],

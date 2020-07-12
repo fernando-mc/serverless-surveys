@@ -27,4 +27,3 @@ def get_customer(customer=None, table=default_table):
         return {
             "error": error_message
         }
-

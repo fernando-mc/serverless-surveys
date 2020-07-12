@@ -19,6 +19,7 @@ request_schema = {
     'required': ['pathParameters'],
 }
 
+
 @json_schema_validator(request_schema=request_schema)
 @cors_headers
 @json_http_resp

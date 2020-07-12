@@ -1,9 +1,3 @@
-import boto3
-import json
-import os
-import uuid
-
-
 class NoCustomerIdException(Exception):
     pass
 
