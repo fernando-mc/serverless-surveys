@@ -7,7 +7,7 @@ provider:
   runtime: python3.8
   environment:
     DYNAMODB_TABLE: test-surveys-${opt:stage, self:provider.stage}
-  httpApi:
+  http:
     cors: true
   iamRoleStatements:
     - Effect: Allow
@@ -24,27 +24,39 @@ functions:
   createCustomer:
     handler: src/handlers/create_customer_handler.handler
     events:
-      - httpApi:
+      - http:
           path: /customer
           method: post
   getCustomer:
-    handler: src/handlers/create_customer_handler.handler
+    handler: src/handlers/get_customer_handler.handler
     events:
-      - httpApi:
-          path: /customer
+      - http:
+          path: /customer/{customer_id}
           method: get
   createSurvey:
     handler: src/handlers/create_survey_handler.handler
     events:
-      - httpApi:
+      - http:
           path: /survey
           method: post
-  createResponse:
+  getCustomerSurvey:
+    handler: src/handlers/get_survey_handler.handler
+    events:
+      - http:
+          path: customer/{customer_id}/survey/{survey_id}
+          method: get
+  createSurveyResponse:
     handler: src/handlers/create_response_handler.handler
     events:
-      - httpApi:
+      - http:
           path: /response
           method: post
+  getSurveyResponse:
+    handler: src/handlers/get_survey_handler.handler
+    events:
+      - http:
+          path: survey/{survey_id}/response/{response_id}
+          method: get
 
 resources:
   Resources:
@@ -74,3 +86,7 @@ package:
     - node_modules/**
     - venv/**
     - __pycache__/**
+    - tests/**
+    - .vscode/**
+    - .pytest_cache/**
+    - conftest.py
