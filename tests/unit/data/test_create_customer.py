@@ -27,9 +27,12 @@ def test_create_customer_returns_customer_instance(dynamodb_table):
 
 
 def test_create_customer_returns_error_info_when_it_fails(dynamodb_table):
-    from src.data.create_customer import create_customer
+    from src.data.create_customer import (
+        create_customer, CustomerCreationException
+    )
     table = mocked_table()
-    assert create_customer(
-        customer='Garbage',
-        table=table
-    ) == {"error": 'Could not create customer'}
+    with pytest.raises(CustomerCreationException):
+        create_customer(
+            customer='Garbage',
+            table=table
+        )

@@ -27,8 +27,5 @@ request_schema = {
 @dump_json_body
 def handler(event, context):
     customer = Customer(**event['body'])
-    result = create_customer(customer)
-    if result.get('error'):
-        raise Exception(result['error'])
-    else:
-        return event['body']
+    create_customer(customer)
+    return event['body']

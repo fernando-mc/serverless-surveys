@@ -1,3 +1,4 @@
+import pytest
 from tests.utils.dynamodb import mocked_table
 
 
@@ -16,7 +17,7 @@ class StubResponse:
         }
 
 
-def test_create_customer(dynamodb_table):
+def test_create_response(dynamodb_table):
     from src.data.create_response import create_response
     response_instance = StubResponse()
     table = mocked_table()
@@ -24,3 +25,15 @@ def test_create_customer(dynamodb_table):
         response=response_instance,
         table=table
     ) == response_instance
+
+
+def test_create_response_returns_error_info_when_it_fails(dynamodb_table):
+    from src.data.create_response import (
+        create_response, ResponseCreationException
+    )
+    table = mocked_table()
+    with pytest.raises(ResponseCreationException):
+        create_response(
+            response='Garbage',
+            table=table
+        )

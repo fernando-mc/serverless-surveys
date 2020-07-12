@@ -27,8 +27,5 @@ request_schema = {
 @dump_json_body
 def handler(event, context):
     response = Response(**event['body'])
-    result = create_response(response)
-    if result.get('error'):
-        raise Exception(result['error'])
-    else:
-        return event['body']
+    create_response(response)
+    return event['body']

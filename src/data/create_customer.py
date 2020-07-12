@@ -2,6 +2,10 @@ import boto3
 import os
 
 
+class CustomerCreationException(Exception):
+    pass
+
+
 def get_table():
     dynamodb = boto3.resource("dynamodb", region_name='us-east-1')
     table = dynamodb.Table(os.environ["DYNAMODB_TABLE"])
@@ -22,6 +26,4 @@ def create_customer(customer=None, table=default_table):
         print("Error creating customer")
         print(e)
         error_message = "Could not create customer"
-        return {
-            "error": error_message
-        }
+        raise CustomerCreationException(error_message)
