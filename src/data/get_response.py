@@ -1,6 +1,6 @@
 import boto3
 import os
-from src.entities.customers import customer_from_item
+from src.entities.responses import response_from_item
 
 
 def get_table():
@@ -13,17 +13,17 @@ def get_table():
 default_table = get_table()
 
 
-def get_customer(customer=None, table=default_table):
+def get_response(response=None, table=default_table):
     try:
         item = table.get_item(
-            Key=customer.key()
+            Key=response.key()
         )['Item']
-        customer = customer_from_item(item)
-        return customer
+        response = response_from_item(item)
+        return response
     except Exception as e:
-        print("Error getting customer")
+        print("Error getting response")
         print(e)
-        error_message = "Could not get customer"
+        error_message = "Could not get response"
         return {
             "error": error_message
         }

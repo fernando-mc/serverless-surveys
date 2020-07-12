@@ -34,3 +34,10 @@ class Survey:
             "survey_id": self.survey_id,
             "survey_data": self.survey_data
         }
+
+def survey_from_item(attributes):
+    return Survey(
+        customer_id=attributes['customer_id'],
+        survey_id=attributes['survey_id'],
+        survey_data=attributes['survey_data']
+    )

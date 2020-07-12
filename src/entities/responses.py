@@ -35,3 +35,10 @@ class Response:
             "response_id": self.response_id,
             "response_data": self.response_data
         }
+
+def response_from_item(attributes):
+    return Response(
+        survey_id=attributes['survey_id'],
+        response_id=attributes['response_id'],
+        response_data=attributes['response_data']
+    )

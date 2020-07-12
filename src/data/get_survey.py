@@ -1,6 +1,6 @@
 import boto3
 import os
-from src.entities.customers import customer_from_item
+from src.entities.surveys import survey_from_item
 
 
 def get_table():
@@ -13,17 +13,17 @@ def get_table():
 default_table = get_table()
 
 
-def get_customer(customer=None, table=default_table):
+def get_survey(survey=None, table=default_table):
     try:
         item = table.get_item(
-            Key=customer.key()
+            Key=survey.key()
         )['Item']
-        customer = customer_from_item(item)
-        return customer
+        survey = survey_from_item(item)
+        return survey
     except Exception as e:
-        print("Error getting customer")
+        print("Error getting survey")
         print(e)
-        error_message = "Could not get customer"
+        error_message = "Could not get survey"
         return {
             "error": error_message
         }
