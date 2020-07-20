@@ -5,7 +5,8 @@ import src.data.create_response
 
 
 class MockResponse:
-    pass
+    def to_result(self):
+        return {'some': 'stuff'}
 
 
 class Context:
@@ -29,7 +30,7 @@ def setup_handler_monkeypatching(dynamodb_table, monkeypatch):
         return MockResponse()
 
     def mock_create_response(*args, **kwargs):
-        pass
+        return MockResponse()
     monkeypatch.setattr(src.entities.responses, "Response", mock_response)
     monkeypatch.setattr(
         src.data.create_response,

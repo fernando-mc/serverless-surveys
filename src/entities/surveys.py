@@ -21,18 +21,29 @@ class Survey:
         if isinstance(survey_data, dict):
             self.survey_data = survey_data
 
+    def pk(self):
+        return f'CUSTOMER#{self.customer_id}'
+
+    def sk(self):
+        return f'SURVEY#{self.survey_id}'
+
     def key(self):
         return {
-            'PK': f'CUSTOMER#{self.customer_id}',
-            'SK': f'SURVEY#{self.survey_id}',
+            'PK': self.pk(),
+            'SK': self.sk()
+        }
+
+    def to_result(self):
+        return {
+            "customer_id": self.customer_id,
+            "survey_id": self.survey_id,
+            "survey_data": self.survey_data
         }
 
     def to_item(self):
         return {
             **self.key(),
-            "customer_id": self.customer_id,
-            "survey_id": self.survey_id,
-            "survey_data": self.survey_data
+            **self.to_result()
         }
 
 

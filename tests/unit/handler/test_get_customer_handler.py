@@ -29,6 +29,7 @@ def setup_table_item(dynamodb_table):
 def test_get_customer_handler_returns_200(setup_table_item):
     from src.handlers.get_customer_handler import handler
     result = handler(good_event, Context())
+    print(result)
     assert result['statusCode'] == 200
 
 

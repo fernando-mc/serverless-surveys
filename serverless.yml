@@ -45,6 +45,12 @@ functions:
       - http:
           path: customer/{customer_id}/survey/{survey_id}
           method: get
+  getAllCustomerSurveys:
+    handler: src/handlers/get_all_customer_surveys_handler.handler
+    events:
+      - http:
+          path: customer/{customer_id}/surveys
+          method: get
   createSurveyResponse:
     handler: src/handlers/create_response_handler.handler
     events:
@@ -56,6 +62,12 @@ functions:
     events:
       - http:
           path: survey/{survey_id}/response/{response_id}
+          method: get
+  getAllSurveyResponses:
+    handler: src/handlers/get_all_survey_responses_handler.handler
+    events:
+      - http:
+          path: survey/{survey_id}/responses
           method: get
 
 resources:

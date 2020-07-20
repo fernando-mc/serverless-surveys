@@ -4,3 +4,4 @@ jsonschema
 moto
 boto3
 pytest-cov
+requests

@@ -28,5 +28,8 @@ request_schema = {
 @dump_json_body
 def handler(event, context):
     survey = Survey(**event['body'])
-    create_survey(survey)
-    return event['body']
+    result = create_survey(survey)
+    if hasattr(result, 'error'):
+        raise Exception(result['error'])
+    else:
+        return result.to_result()

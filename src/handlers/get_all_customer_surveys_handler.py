@@ -2,7 +2,7 @@ from lambda_decorators import (
     cors_headers, json_http_resp,
     json_schema_validator, dump_json_body)
 from src.entities.customers import Customer
-from src.data.get_customer import get_customer
+from src.data.get_all_customer_surveys import get_all_customer_surveys
 
 
 request_schema = {
@@ -27,8 +27,11 @@ request_schema = {
 def handler(event, context):
     customer_id = event['pathParameters']['customer_id']
     customer = Customer(customer_id=customer_id)
-    result = get_customer(customer)
-    if hasattr(result, 'error'):
-        raise Exception(result['error'])
+    all_surveys_result = get_all_customer_surveys(customer)
+    if hasattr(all_surveys_result, 'error'):
+        raise Exception(all_surveys_result['error'])
     else:
-        return result.to_result()
+        surveys = []
+        for survey in all_surveys_result:
+            surveys.append(survey.to_result())
+        return {'surveys': surveys}

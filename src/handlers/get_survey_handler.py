@@ -29,8 +29,8 @@ def handler(event, context):
     customer_id = event['pathParameters']['customer_id']
     survey_id = event['pathParameters']['survey_id']
     survey = Survey(customer_id=customer_id, survey_id=survey_id)
-    result = get_survey(survey).to_item()
-    if result.get('error'):
+    result = get_survey(survey)
+    if hasattr(result, 'error'):
         raise Exception(result['error'])
     else:
-        return result
+        return result.to_result()

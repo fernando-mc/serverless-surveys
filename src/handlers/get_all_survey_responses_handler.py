@@ -1,8 +1,8 @@
 from lambda_decorators import (
     cors_headers, json_http_resp,
     json_schema_validator, dump_json_body)
-from src.entities.responses import Response
-from src.data.get_response import get_response
+from src.entities.surveys import Survey
+from src.data.get_all_survey_responses import get_all_survey_responses
 
 
 request_schema = {
@@ -12,9 +12,8 @@ request_schema = {
             'type': 'object',
             'properties': {
                 'survey_id': {'type': 'string'},
-                'response_id': {'type': 'string'},
             },
-            'required': ['survey_id', 'response_id']
+            'required': ['survey_id']
         }
     },
     'required': ['pathParameters'],
@@ -27,10 +26,12 @@ request_schema = {
 @dump_json_body
 def handler(event, context):
     survey_id = event['pathParameters']['survey_id']
-    response_id = event['pathParameters']['response_id']
-    response = Response(survey_id=survey_id, response_id=response_id)
-    result = get_response(response)
-    if hasattr(result, 'error'):
-        raise Exception(result['error'])
+    survey = Survey(survey_id=survey_id)
+    all_responses_result = get_all_survey_responses(survey)
+    if hasattr(all_responses_result, 'error'):
+        raise Exception(all_responses_result['error'])
     else:
-        return result.to_result()
+        responses = []
+        for response in all_responses_result:
+            responses.append(response.to_result())
+        return {'responses': responses}

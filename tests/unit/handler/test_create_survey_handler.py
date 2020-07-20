@@ -5,7 +5,8 @@ import src.data.create_survey
 
 
 class MockSurvey:
-    pass
+    def to_result(self):
+        return {'some': 'stuff'}
 
 
 class Context:
@@ -29,7 +30,7 @@ def setup_handler_monkeypatching(dynamodb_table, monkeypatch):
         return MockSurvey()
 
     def mock_create_survey(*args, **kwargs):
-        pass
+        return MockSurvey()
     monkeypatch.setattr(src.entities.surveys, "Survey", mock_survey)
     monkeypatch.setattr(
         src.data.create_survey,

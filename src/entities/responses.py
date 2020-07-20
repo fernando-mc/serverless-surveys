@@ -28,12 +28,17 @@ class Response:
             'SK': f'RESPONSE#{self.response_id}',
         }
 
-    def to_item(self):
+    def to_result(self):
         return {
-            **self.key(),
             "survey_id": self.survey_id,
             "response_id": self.response_id,
             "response_data": self.response_data
+        }
+
+    def to_item(self):
+        return {
+            **self.key(),
+            **self.to_result()
         }
 
 
