@@ -8,7 +8,7 @@ class Context:
 
 
 good_event = {
-    'pathParameters': {
+    'queryStringParameters': {
         'customer_id': '1',
         'survey_id': '1'
     }

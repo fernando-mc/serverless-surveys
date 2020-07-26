@@ -7,7 +7,7 @@ provider:
   runtime: python3.8
   environment:
     DYNAMODB_TABLE: test-surveys-${opt:stage, self:provider.stage}
-  http:
+  httpApi:
     cors: true
   iamRoleStatements:
     - Effect: Allow
@@ -42,8 +42,8 @@ functions:
   getCustomerSurvey:
     handler: src/handlers/get_survey_handler.handler
     events:
-      - http:
-          path: customer/{customer_id}/survey/{survey_id}
+      - httpApi:
+          path: /customer-survey
           method: get
   getAllCustomerSurveys:
     handler: src/handlers/get_all_customer_surveys_handler.handler
