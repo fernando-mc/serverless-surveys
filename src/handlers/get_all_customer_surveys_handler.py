@@ -30,8 +30,7 @@ def handler(event, context):
     all_surveys_result = get_all_customer_surveys(customer)
     if hasattr(all_surveys_result, 'error'):
         raise Exception(all_surveys_result['error'])
-    else:
-        surveys = []
-        for survey in all_surveys_result:
-            surveys.append(survey.to_result())
-        return {'surveys': surveys}
+    surveys = []
+    for survey in all_surveys_result:
+        surveys.append(survey.to_result())
+    return {'surveys': surveys}
