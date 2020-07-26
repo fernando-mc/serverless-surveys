@@ -21,13 +21,26 @@ def test_create_customer_returns_json():
     assert request.text == json.dumps(jsontest_item)
 
 
-# def test_create_customer_saves_dynamodb_item():
-#     url = BASE_URL + '/customer'
-#     itemtest_item = gen_sample_customer_item('itemtest')
-#     request = requests.post(url, json=itemtest_item)
-#     table = dev_table()
-#     item = table.get_item(Key={
-#         'PK': 'CUSTOMER#itemtest',
-#         'SK': 'PROFILE#itemtest'
-#     })['Item']
-#     assert request.text == item
+def test_create_customer_saves_dynamodb_item():
+    url = BASE_URL + '/customer'
+    itemtest_item = gen_sample_customer_item('saveditemtest')
+    requests.post(url, json=itemtest_item)
+    expected_item = {
+        'PK': 'CUSTOMER#saveditemtest', 
+        'SK': 'PROFILE#saveditemtest', 
+        'customer_id': 'saveditemtest', 
+        'profile_data': {'some': 'data'}
+    }
+    table = dev_table()
+    item = table.get_item(Key={
+        'PK': 'CUSTOMER#saveditemtest',
+        'SK': 'PROFILE#saveditemtest'
+    })['Item']
+    assert expected_item == item
+
+
+def test_create_customer_returns_saved_item():
+    url = BASE_URL + '/customer'
+    itemtest_item = gen_sample_customer_item('saveditemtest')
+    request = requests.post(url, json=itemtest_item)
+    assert json.loads(request.text) == itemtest_item
