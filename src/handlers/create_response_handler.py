@@ -30,5 +30,4 @@ def handler(event, context):
     result = create_response(response)
     if hasattr(result, 'error'):
         raise Exception(result['error'])
-    else:
-        return result.to_result()
+    return result.to_result()

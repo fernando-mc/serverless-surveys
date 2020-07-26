@@ -31,5 +31,4 @@ def handler(event, context):
     result = create_survey(survey)
     if hasattr(result, 'error'):
         raise Exception(result['error'])
-    else:
-        return result.to_result()
+    return result.to_result()
