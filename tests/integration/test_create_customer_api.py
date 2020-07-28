@@ -1,4 +1,3 @@
-import json
 import requests
 from tests.integration.utils import (
     get_http_api_endpoint_url,
