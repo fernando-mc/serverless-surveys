@@ -1,5 +1,7 @@
 name: Python Pull Request Workflow
 on: [pull_request]
+env: 
+  TEST_AUTH0_CLIENT_SECRET: ${{ secrets.TEST_AUTH0_CLIENT_SECRET }}
 jobs:
 
   qa:
