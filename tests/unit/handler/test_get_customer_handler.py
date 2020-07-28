@@ -8,8 +8,14 @@ class Context:
 
 
 good_event = {
-    'pathParameters': {
-        'customer_id': '1'
+    "requestContext": {
+        'authorizer': {
+            'jwt': {
+                'claims': {
+                    'sub': '1'
+                }
+            }
+        }
     }
 }
 

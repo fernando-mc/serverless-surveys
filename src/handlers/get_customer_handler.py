@@ -8,15 +8,14 @@ from src.data.get_customer import get_customer
 request_schema = {
     'type': 'object',
     'properties': {
-        'pathParameters': {
+        'requestContext': {
             'type': 'object',
             'properties': {
-                'customer_id': {'type': 'string'},
-            },
-            'required': ['customer_id']
+                'authorizer': {'type': 'object'}
+            }
         }
     },
-    'required': ['pathParameters'],
+    'required': ['requestContext'],
 }
 
 
@@ -25,8 +24,8 @@ request_schema = {
 @json_http_resp
 @dump_json_body
 def handler(event, context):
-    customer_id = event['pathParameters']['customer_id']
-    customer = Customer(customer_id=customer_id)
+    sub = event['requestContext']['authorizer']['jwt']['claims']['sub']
+    customer = Customer(customer_id=sub)
     result = get_customer(customer)
     if hasattr(result, 'error'):
         raise Exception(result['error'])

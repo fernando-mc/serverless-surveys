@@ -10,13 +10,18 @@ request_schema = {
         'body': {
             'type': 'object',
             'properties': {
-                'customer_id': {'type': 'string'},
                 'profile_data': {'type': 'object'}
             },
-            'required': ['customer_id', 'profile_data']
+            'required': ['profile_data']
+        },
+        'requestContext': {
+            'type': 'object',
+            'properties': {
+                'authorizer': {'type': 'object'}
+            }
         }
     },
-    'required': ['body'],
+    'required': ['body', 'requestContext'],
 }
 
 
@@ -26,6 +31,9 @@ request_schema = {
 @json_http_resp
 @dump_json_body
 def handler(event, context):
+    sub = event['requestContext']['authorizer']['jwt']['claims']['sub']
+    body = event['body']
+    body['customer_id'] = sub
     customer = Customer(**event['body'])
     result = create_customer(customer)
     if hasattr(result, 'error'):
