@@ -8,7 +8,7 @@ from src.data.get_survey import get_survey
 request_schema = {
     'type': 'object',
     'properties': {
-        'pathParameters': {
+        'queryStringParameters': {
             'type': 'object',
             'properties': {
                 'customer_id': {'type': 'string'},
@@ -17,7 +17,7 @@ request_schema = {
             'required': ['customer_id', 'survey_id']
         }
     },
-    'required': ['pathParameters'],
+    'required': ['queryStringParameters'],
 }
 
 
@@ -26,11 +26,10 @@ request_schema = {
 @json_http_resp
 @dump_json_body
 def handler(event, context):
-    customer_id = event['pathParameters']['customer_id']
-    survey_id = event['pathParameters']['survey_id']
+    customer_id = event['queryStringParameters']['customer_id']
+    survey_id = event['queryStringParameters']['survey_id']
     survey = Survey(customer_id=customer_id, survey_id=survey_id)
-    result = get_survey(survey).to_item()
-    if result.get('error'):
+    result = get_survey(survey)
+    if hasattr(result, 'error'):
         raise Exception(result['error'])
-    else:
-        return result
+    return result.to_result()

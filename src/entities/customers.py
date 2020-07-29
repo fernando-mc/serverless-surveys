@@ -12,17 +12,25 @@ class Customer:
         if isinstance(profile_data, dict):
             self.profile_data = profile_data
 
+    def pk(self):
+        return f'CUSTOMER#{self.customer_id}'
+
     def key(self):
         return {
-            'PK': f'CUSTOMER#{self.customer_id}',
+            'PK': self.pk(),
             'SK': f'PROFILE#{self.customer_id}',
+        }
+
+    def to_result(self):
+        return {
+            "customer_id": self.customer_id,
+            "profile_data": self.profile_data
         }
 
     def to_item(self):
         return {
             **self.key(),
-            "customer_id": self.customer_id,
-            "profile_data": self.profile_data
+            **self.to_result()
         }
 
 

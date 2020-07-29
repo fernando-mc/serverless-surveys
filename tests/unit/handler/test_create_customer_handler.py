@@ -6,8 +6,16 @@ class Context:
 
 
 good_event = {
+    "requestContext": {
+        'authorizer': {
+            'jwt': {
+                'claims': {
+                    'sub': '1'
+                }
+            }
+        }
+    },
     "body": json.dumps({
-        "customer_id": "1",
         "profile_data": {
             "question1": "sup?"
         }
