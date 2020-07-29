@@ -9,6 +9,12 @@ provider:
     DYNAMODB_TABLE: test-surveys-${opt:stage, self:provider.stage}
   httpApi:
     cors: true
+    payload: '2.0'
+    authorizers:
+      serviceAuthorizer:
+        identitySource: $request.header.Authorization
+        issuerUrl: https://dev-5xmirf9t.auth0.com/
+        audience: serverless-surveys
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -24,21 +30,24 @@ functions:
   createCustomer:
     handler: src/handlers/create_customer_handler.handler
     events:
-      - http:
+      - httpApi:
           path: /customer
           method: post
+          authorizer: serviceAuthorizer
   getCustomer:
     handler: src/handlers/get_customer_handler.handler
     events:
-      - http:
-          path: /customer/{customer_id}
+      - httpApi:
+          path: /customer
           method: get
+          authorizer: serviceAuthorizer
   createSurvey:
     handler: src/handlers/create_survey_handler.handler
     events:
-      - http:
+      - httpApi:
           path: /survey
           method: post
+  # Update next one to just rely on survey_id?
   getCustomerSurvey:
     handler: src/handlers/get_survey_handler.handler
     events:
@@ -48,13 +57,13 @@ functions:
   getAllCustomerSurveys:
     handler: src/handlers/get_all_customer_surveys_handler.handler
     events:
-      - http:
-          path: customer/{customer_id}/surveys
+      - httpApi:
+          path: /get-all-customer-surveys
           method: get
   createSurveyResponse:
     handler: src/handlers/create_response_handler.handler
     events:
-      - http:
+      - httpApi:
           path: /response
           method: post
   getSurveyResponse:
@@ -92,6 +101,13 @@ resources:
 
 plugins:
   - serverless-python-requirements
+  - serverless-finch
+
+custom:
+  client:
+    bucketName: serverless-surveys
+    distributionFolder: frontend
+    errorDocument: index.html
 
 package:
   exclude:
@@ -99,6 +115,7 @@ package:
     - venv/**
     - __pycache__/**
     - tests/**
+    - frontend/**
     - .vscode/**
     - .pytest_cache/**
     - conftest.py
