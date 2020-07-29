@@ -3,10 +3,16 @@
     <div class="item">
       <h2>The Survey Union</h2>
     </div>
-    <button v-on:click="login()" v-if="!$auth.isAuthenticated" class="ui primary button">Login</button>
-    <button v-on:click="logout()" v-if="$auth.isAuthenticated" class="ui primary button">Logout</button>
-    <div id="avatar-img-div" v-show="profileImageVisibility">
-      <img :src="profileUrl" class="ui avatar image"/>
+    <!-- Check that the SDK client is not currently loading before accessing is methods -->
+    <div v-if="!$auth.loading">
+      <router-link to="/home" class="ui primary button">Home</router-link>
+      <router-link to="/create-survey" class="ui primary button"  > Create Survey</router-link>
+      <router-link v-if="$auth.isAuthenticated" to="/profile" class="ui primary button" >Profile</router-link>
+      <button @click="login()" v-if="!$auth.isAuthenticated" class="ui primary button">Login</button>
+      <button @click="logout()" v-if="$auth.isAuthenticated" class="ui primary button">Logout</button>
+      <div id="avatar-img-div" v-show="profileImageVisibility">
+        <img :src="profileUrl" class="ui avatar image"/>
+      </div>
     </div>
   </div>
 </template>
