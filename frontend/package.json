@@ -11,7 +11,7 @@
     "@auth0/auth0-spa-js": "^1.11.0",
     "@codekraft-studio/vue-record": "0.0.3",
     "algoliasearch": "^4.2.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "instantsearch.css": "^7.4.2",
     "semantic-ui-vue": "^0.10.1",
